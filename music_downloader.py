@@ -9,7 +9,7 @@ import os
 class music_download:
     # Constructing object
     def __init__(self):
-        sg.ChangeLookAndFeel('DarkPurple1')
+        sg.theme('DarkPurple1')
         # Layout
         layout = [
             # Row 1
