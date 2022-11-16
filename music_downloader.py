@@ -37,8 +37,7 @@ class music_download:
     def downloading(self):
         while True:
             try:
-                audio = pytube.YouTube(
-                    self.values1['-box-']).streams.filter(only_audio=True)[0]
+                audio = pytube.YouTube(self.values['-box-']).streams.filter(only_audio=True)[0]
                 self.file = audio.download('musics')
                 break
             except:
@@ -67,7 +66,7 @@ class music_download:
         if self.event in ('-download-'):
             music_download.downloading(self)
             try:
-                music_download.convert_mp3(self) if self.values1['-mp3-'] == True else music_download.convert_mp4(self)
+                music_download.convert_mp3(self) if self.values['-mp3-'] == True else music_download.convert_mp4(self)
                 sg.popup('Download succesfully completed!!')
             except:
                pass
