@@ -8,8 +8,9 @@ class music_download:
     # Constructing object
     def __init__(self):
         sg.theme('DarkPurple1')
-        # Layout
-        layout = [
+
+        # Main Window Layout
+        main_layout = [
             # Row 1
             [sg.Text('Download Youtube:', size=(17, 0),
                      font='Consolas', key='-text-')],
@@ -23,10 +24,11 @@ class music_download:
             [sg.Button('Download', size=(10, 1),
                        font='Consolas', key='-download-')]
         ]
-        # Window
-        self.window = sg.Window('Music Downloader').Layout(layout)
+
+        # Main Window
+        self.main_window = sg.Window('Music Downloader').Layout(main_layout)
         # Timeout
-        self.window.read(timeout=1)
+        self.main_window.read(timeout=1)
         # File auxiliars
         self.file = ''
         self.new_file = ''
@@ -34,14 +36,15 @@ class music_download:
     # Method to download songs
     def downloading(self):
         while True:
-            if self.values['-box-'] != '':
+            try:
                 audio = pytube.YouTube(
-                    self.values['-box-']).streams.filter(only_audio=True)[0]
+                    self.values1['-box-']).streams.filter(only_audio=True)[0]
                 self.file = audio.download('musics')
                 break
-            else:
-                sg.popup('Please, enter a link!')
-
+            except:
+                sg.popup('Please, enter a valid link!')
+                break
+              
     # Method to convert to .mp3 extension
     def convert_mp3(self):
         base, extension = os.path.splitext(self.file)
@@ -58,16 +61,17 @@ class music_download:
 
     # Method to run the app
     def running(self):
-        self.event, self.values = self.window.Read()
+        self.event, self.values = self.main_window.Read()
         if self.event in (None, sg.WIN_CLOSED):  # Closing app
             exit(0)
         if self.event in ('-download-'):
             music_download.downloading(self)
-            music_download.convert_mp3(
-                self) if self.values['-mp3-'] == True else music_download.convert_mp4(self)
-            sg.popup('Download succesfully completed!!')
-        self.window.Close()
-
+            try:
+                music_download.convert_mp3(self) if self.values1['-mp3-'] == True else music_download.convert_mp4(self)
+                sg.popup('Download succesfully completed!!')
+            except:
+               pass
+        self.main_window.Close()
 
 # Running program
 while True:
