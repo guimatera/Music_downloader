@@ -1,30 +1,30 @@
 # Import the required packages for the program
 import pytube
-import PySimpleGUI as psg
+import PySimpleGUI as sg
 import os
 
 # Creating App object
 class music_download:
     # Constructing object
     def __init__(self):
-        psg.theme('DarkPurple1')
+        sg.theme('DarkPurple1')
         # Layout
         layout = [
             # Row 1
-            [psg.Text('Download Youtube:', size=(17, 0),
+            [sg.Text('Download Youtube:', size=(17, 0),
                      font='Consolas', key='-text-')],
             # Row 2
-            [psg.Text('Link:', size=(6, 0), font='Consolas', key='-link-'),
-             psg.Input('', size=(30, 1), font='Consolas', key='-box-')],
+            [sg.Text('Link:', size=(6, 0), font='Consolas', key='-link-'),
+             sg.Input('', size=(30, 1), font='Consolas', key='-box-')],
             # Row 3
-            [psg.Radio('Convert to MP3', "RADIO1", default=True, key='-mp3-'),
-             psg.Radio('Convert to MP4', "RADIO1", key='-mp4-')],
+            [sg.Radio('Convert to MP3', "RADIO1", default=True, key='-mp3-'),
+             sg.Radio('Convert to MP4', "RADIO1", key='-mp4-')],
             # Row 4
-            [psg.Button('Download', size=(10, 1),
+            [sg.Button('Download', size=(10, 1),
                        font='Consolas', key='-download-')]
         ]
         # Window
-        self.window = psg.Window('Music Downloader').Layout(layout)
+        self.window = sg.Window('Music Downloader').Layout(layout)
         # Timeout
         self.window.read(timeout=1)
         # File auxiliars
@@ -40,7 +40,7 @@ class music_download:
                 self.file = audio.download('musics')
                 break
             else:
-                psg.popup('Please, enter a link!')
+                sg.popup('Please, enter a link!')
 
     # Method to convert to .mp3 extension
     def convert_mp3(self):
@@ -59,13 +59,13 @@ class music_download:
     # Method to run the app
     def running(self):
         self.event, self.values = self.window.Read()
-        if self.event in (None, psg.WIN_CLOSED):  # Closing app
+        if self.event in (None, sg.WIN_CLOSED):  # Closing app
             exit(0)
         if self.event in ('-download-'):
             music_download.downloading(self)
             music_download.convert_mp3(
                 self) if self.values['-mp3-'] == True else music_download.convert_mp4(self)
-            psg.popup('Download succesfully completed!!')
+            sg.popup('Download succesfully completed!!')
         self.window.Close()
 
 
