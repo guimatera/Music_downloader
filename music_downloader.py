@@ -1,7 +1,8 @@
 # Import the required packages for the program
-import pytube
+from pytube import YouTube 
 import PySimpleGUI as sg
 import os
+import time
 
 # Creating App object
 class music_download:
@@ -37,7 +38,8 @@ class music_download:
     def downloading(self):
         while True:
             try:
-                audio = pytube.YouTube(self.values['-box-']).streams.filter(only_audio=True)[0]
+                yt = YouTube(self.values['-box-']);
+                audio = yt.streams.filter(only_audio=True)[0]
                 self.file = audio.download('musics')
                 break
             except:
