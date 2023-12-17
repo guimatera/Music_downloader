@@ -38,6 +38,7 @@ class music_download:
             try:
                 yt = YouTube(self.values['-box-']);
                 music_download.convert_mp3(self, yt) if self.values['-mp3-'] == True else music_download.convert_mp4(self, yt)
+                sg.popup('Download succesfully completed!!')
                 break
             except:
                 sg.popup('Please, enter a valid link!')
@@ -45,13 +46,13 @@ class music_download:
               
     # Method to convert to .mp3 extension
     def convert_mp3(self, link):
-        audio = link.streams.filter(file_extension='mp3').get_highest_resolution()
+        audio = link.streams.filter(only_audio=True)[0]
         self.file = audio.download('musics')
 
         # Method to convert to .mp4 extension
     def convert_mp4(self, link):
         video = link.streams.filter(file_extension='mp4').get_highest_resolution()
-        self.file = video.download('musics')
+        self.file = video.download('videos')
 
     # Method to run the app
     def running(self):
@@ -59,10 +60,8 @@ class music_download:
         if self.event in (None, sg.WIN_CLOSED):  # Closing app
             exit(0)
         if self.event in ('-download-'):
-            music_download.downloading(self)
             try:
-                
-                sg.popup('Download succesfully completed!!')
+                music_download.downloading(self)
             except:
                pass
         self.main_window.Close()
