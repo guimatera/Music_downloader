@@ -1,8 +1,6 @@
 # Import the required packages for the program
 from pytube import YouTube 
 import PySimpleGUI as sg
-import os
-import time
 
 # Creating App object
 class music_download:
@@ -39,26 +37,21 @@ class music_download:
         while True:
             try:
                 yt = YouTube(self.values['-box-']);
-                audio = yt.streams.filter(only_audio=True)[0]
-                self.file = audio.download('musics')
+                music_download.convert_mp3(self, yt) if self.values['-mp3-'] == True else music_download.convert_mp4(self, yt)
                 break
             except:
                 sg.popup('Please, enter a valid link!')
                 break
               
     # Method to convert to .mp3 extension
-    def convert_mp3(self):
-        base, extension = os.path.splitext(self.file)
-        extension = '.mp3'
-        self.new_file = base + extension
-        os.rename(self.file, self.new_file)
+    def convert_mp3(self, link):
+        audio = link.streams.filter(file_extension='mp3').get_highest_resolution()
+        self.file = audio.download('musics')
 
         # Method to convert to .mp4 extension
-    def convert_mp4(self):
-        base, extension = os.path.splitext(self.file)
-        extension = '.mp4'
-        self.new_file = base + extension
-        os.rename(self.file, self.new_file)
+    def convert_mp4(self, link):
+        video = link.streams.filter(file_extension='mp4').get_highest_resolution()
+        self.file = video.download('musics')
 
     # Method to run the app
     def running(self):
@@ -68,7 +61,7 @@ class music_download:
         if self.event in ('-download-'):
             music_download.downloading(self)
             try:
-                music_download.convert_mp3(self) if self.values['-mp3-'] == True else music_download.convert_mp4(self)
+                
                 sg.popup('Download succesfully completed!!')
             except:
                pass
