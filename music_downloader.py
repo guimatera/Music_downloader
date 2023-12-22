@@ -1,4 +1,5 @@
 # Import the required packages for the program
+import os
 from pytube import YouTube 
 import PySimpleGUI as sg
 
@@ -46,8 +47,12 @@ class music_download:
               
     # Method to convert to .mp3 extension
     def convert_mp3(self, link):
-        audio = link.streams.filter(only_audio=True)[0]
+        audio = link.streams.filter(file_extension='mp4').get_highest_resolution()
         self.file = audio.download('musics')
+        base, extension = os.path.splitext(self.file)
+        extension = '.mp3'
+        self.new_file = base + extension
+        os.rename(self.file, self.new_file)
 
         # Method to convert to .mp4 extension
     def convert_mp4(self, link):
