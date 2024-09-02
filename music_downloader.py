@@ -37,7 +37,7 @@ class music_download:
     def downloading(self):
         while True:
             try:
-                yt = YouTube(self.values['-box-']);
+                yt = YouTube(self.values['-box-'])
                 music_download.convert_mp3(self, yt) if self.values['-mp3-'] == True else music_download.convert_mp4(self, yt)
                 sg.popup('Download succesfully completed!!')
                 break
@@ -47,8 +47,8 @@ class music_download:
               
     # Method to convert to .mp3 extension
     def convert_mp3(self, link):
-        audio = link.streams.filter(file_extension='mp4').get_highest_resolution()
-        self.file = audio.download('musics')
+        audio = link.streams.filter(file_extension='mp4')
+        self.file = audio.first().download('musics')
         base, extension = os.path.splitext(self.file)
         extension = '.mp3'
         self.new_file = base + extension
